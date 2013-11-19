@@ -16,6 +16,10 @@ function depurar($data)
 
 // </editor-fold>
 // VALIDACIÓN DE LOS DATOS DEL FORMULARIO AQUI.
+// Para comprobar si estamos recibiendo datos del formulario se puede utilizar:
+// if (!empty($_POST)) // estamos recibiendo datos por POST
+// empty() es esencialmente el equivalente conciso de !isset($var) || $var == false.
+// Otra forma puede ser:
 if ( $_SERVER['REQUEST_METHOD'] == "POST" ) // estamos recibiendo datos por POST
 { // Aqui dentro validaremos todo y grabaremos en la base de datos.
 	$errores = array();
