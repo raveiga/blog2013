@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php require '../lib/constantes.php'; ?>
+<?php require '../lib/funciones.php'; ?>
 <html lang="en">
 	<?php require RUTA_INC . 'head.php'; ?>
 	<body>
