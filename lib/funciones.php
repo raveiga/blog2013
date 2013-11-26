@@ -32,8 +32,8 @@ function enviar_correo($nombreDestinatario,$emailDestinatario,$asunto,$contenido
 {
 	// Cargamos las librerias de phpmailer
 	// cargamos las constantes por si acaso.
-	require 'class.phpmailer.php';
-	require 'class.smtp.php';
+	require_once 'class.phpmailer.php';
+	require_once 'class.smtp.php';
 	require_once 'constantes.php';
 	
 	

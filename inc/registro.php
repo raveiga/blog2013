@@ -94,12 +94,20 @@ if ( $_SERVER['REQUEST_METHOD'] == "POST" ) // estamos recibiendo datos por POST
 	// Comprobamos si hay errores o no, y si está todo OK insertamos en la tabla.
 	if (count($errores)==0)
 	{
+		$validacion=md5($_POST['nickname'].time().$_SERVER['REMOTE_ADDR']);
 		// Insertamos en la tabla.
 		// Preparamos la SQL.
-		$sql=sprintf("insert into users(nickname,name,surname,password,email,birthday,datecreated,ipaddress,privilege) values('%s','%s','%s','%s','%s','%s','%s','%s',%b)",$_POST['nickname'],$_POST['name'],$_POST['surname'],encriptar($_POST['password']),$_POST['email'],cambiaf_mysql($_POST['birthday']),time(),$_SERVER['REMOTE_ADDR'],1);
+		$sql=sprintf("insert into users(nickname,name,surname,password,email,birthday,datecreated,ipaddress,privilege,checking) values('%s','%s','%s','%s','%s','%s','%s','%s',%b,'%s')",$_POST['nickname'],$_POST['name'],$_POST['surname'],encriptar($_POST['password']),$_POST['email'],cambiaf_mysql($_POST['birthday']),time(),$_SERVER['REMOTE_ADDR'],1,$validacion);
 		
 		// Ejecutamos la consulta.
 		mysql_query($sql,$conexion) or die(mysql_error());
+		
+		// Enviamos el correo de validación.
+		$asunto="Validación de registro en Blog PHP 2013.";
+		$contenido="Estimado/a {$_POST['name']} {$_POST['surname']}, hemos recibido una petición de suscripción a nuestra web.<br/><br/>Por favor pulse en el siguiente hiperenlace para validar su suscripción: <a href='http://www.veiga.local/blog2013/web/validacion.html?ck=$validacion'>Valide su correo aquí</a>.<br/><br/>Reciba un cordial saludo.<br/><br/>".date("d/m/Y",time());
+		
+		// Enviamos el correo.
+		enviar_correo($_POST['name'].' '.$_POST['surname'], $_POST['email'], $asunto,$contenido);
 		
 		// Mostramos mensaje
 		echo "Datos insertados correctamente";
