@@ -14,6 +14,16 @@ define('BD_NOMBRE', 'c2base2');
 define('BD_USUARIO', 'c2mysql');
 define('BD_PASSWORD', 'abc123.');
 
+// Constantes para el servicio de correo
+define('MAIL_SERVIDOR',$_SERVER['HTTP_HOST']);
+define('MAIL_PUERTO',25); // Para Gmail es el 465.
+//define('MAIL_SSL','ssl'); // Para Gmail.
+define('MAIL_REMITENTE','info@veiga.local');
+define('MAIL_PASSWORD','abc123..');
+define('MAIL_NOMBRE_REMITENTE','Rafa Veiga');
+
+
+
 // Creamos la conexión de la base de datos.
 $conexion=mysql_connect(BD_SERVIDOR,BD_USUARIO,BD_PASSWORD) or die(mysql_error());
 

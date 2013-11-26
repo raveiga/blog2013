@@ -28,4 +28,59 @@ function cambiaf_normal($fecha)
 	return date('d/m/Y',strtotime($fecha));
 }
 
+function enviar_correo($nombreDestinatario,$emailDestinatario,$asunto,$contenido,$adjunto='')
+{
+	// Cargamos las librerias de phpmailer
+	// cargamos las constantes por si acaso.
+	require 'class.phpmailer.php';
+	require 'class.smtp.php';
+	require_once 'constantes.php';
+	
+	
+	if (!empty($emailDestinatario))
+	{ // Enviamos el correo.
+	
+		// Creamos un objeto de la clase phpmailer.
+		$correo = new PHPMailer();
+		
+		// Ahora configuramos ese objeto.
+		$correo->IsSMTP(); // indicamos que enviamos por SMTP.
+		$correo->SMTPAuth = true; // Nos autenticaremos en el servidor de correo.
+		$correo->CharSet= 'UTF-8';
+		$correo->Host = MAIL_SERVIDOR;
+		$correo->Port = MAIL_PUERTO;
+		
+		// Si enviamos correo por GMAIL (chequeando el puerto),habilitamos
+		// el protocolo SSL.
+		if (MAIL_PUERTO==465 || MAIL_PUERTO==587)  //usamos GMAIL
+			$correo->SMTPSecure = 'ssl';
+		
+		// Si usais XAMPP, teneis que habilitar en \xampp\php\php.ini 
+		// la siguiente extensión:   
+		// extension= php_openssl.dll
+		
+		// Datos del correo.
+		$correo->Username= MAIL_REMITENTE;
+		$correo->Password= MAIL_PASSWORD;
+		$correo->SetFrom(MAIL_REMITENTE,MAIL_NOMBRE_REMITENTE);
+		$correo->AddReplyTo(MAIL_REMITENTE,MAIL_NOMBRE_REMITENTE);
+		
+		$correo->AddAddress($emailDestinatario,$nombreDestinatario);
+		$correo->Subject = $asunto;
+		$correo->AltBody = 'Cambia de cliente de correo, lo que usas es una basura';
+		$correo->MsgHTML($contenido);
+		$correo->IsHTML(true);
+		
+		if ($adjunto!='')	// hay que adjuntar un archivo.
+			$correo->AddAttachment ($adjunto);
+		
+		// Enviamos el correo.
+		if ($correo->Send())
+			return true;
+		else
+			echo $correo->ErrorInfo;
+	}
+}
+
+
 ?>
