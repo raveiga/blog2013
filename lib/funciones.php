@@ -33,7 +33,6 @@ function enviar_correo($nombreDestinatario,$emailDestinatario,$asunto,$contenido
 	// Cargamos las librerias de phpmailer
 	// cargamos las constantes por si acaso.
 	require_once 'class.phpmailer.php';
-	require_once 'class.smtp.php';
 	require_once 'constantes.php';
 	
 	
@@ -76,9 +75,9 @@ function enviar_correo($nombreDestinatario,$emailDestinatario,$asunto,$contenido
 		
 		// Enviamos el correo.
 		if ($correo->Send())
-			return true;
+			echo 'Se ha enviado correctamente un correo electrónico a '.$emailDestinatario.'.';
 		else
-			echo $correo->ErrorInfo;
+			echo 'Error enviado correo: '.$correo->ErrorInfo;
 	}
 }
 
