@@ -11,7 +11,7 @@ if (!empty($_POST['nickname']))
 	if (mysql_num_rows($recordset) != 0)
 	{
 		$fila = mysql_fetch_assoc($recordset);
-		if ($fila['checking'] == 'OK')
+		if ($fila['checking'] == 'ok')
 		{
 			// Comprobamos que la contraseña es correcta, usando Crypt.
 			if (crypt($_POST['password'], $fila['password']) == $fila['password'])

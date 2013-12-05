@@ -3,7 +3,7 @@
 if (!empty($_GET['ck']))
 {
 	// Consulta de actualización.
-	$sql = sprintf("update users set checking='OK' where checking='%s'", $_GET['ck']);
+	$sql = sprintf("update users set checking='ok' where checking='%s'", $_GET['ck']);
 	mysql_query($sql, $conexion) or die(mysql_error());
 
 	if (mysql_affected_rows() != 0) // Si hubo filas afectadas.
