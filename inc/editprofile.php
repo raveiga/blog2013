@@ -23,8 +23,7 @@ function depurar($data)
 $errores = array();
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") // estamos recibiendo datos por POST
-{	// Aqui dentro validaremos todo y grabaremos en la base de datos.
-
+{	// Aqui dentro realizaremos la actualización de los datos y validaciones.
 	// Primero depuramos los campos, luego los validaremos.
 	//$_POST['nickname']=depurar($_POST['nickname']);
 	foreach ($_POST as $clave => $valor)
@@ -33,28 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") // estamos recibiendo datos por POST
 		$_POST[$clave] = depurar($valor);
 	}
 
-	// Comprobamos que el nick no esté en uso.
-	$sql = sprintf("select nickname from users where nickname='%s'", $_POST['nickname']);
-
-	// Ejecutamos la consulta.
-	$resultados = mysql_query($sql, $conexion) or die(mysql_error());
-	if (mysql_num_rows($resultados) != 0)
-		$errores[] = "The nickname <strong>{$_POST['nickname']}</strong> is already in use. Please try a different one.";
-
 	// Como todos los campos son de texto podemos comprobar rápidamente que todos los campos tengan datos.
 	// Damos por supuesto que todos los campos en el formulario son obligatorios.
 	foreach ($_POST as $clave => $valor)
 	{
 		if (empty($valor))
 			$errores[] = "The field <strong>$clave</strong> is mandatory.";
-	}
-
-	// Comenzamos la validación usando expresiones regulares.
-	// Validación del nickname. min 4 caracteres y máximo 20.
-	// letras y números y no caracteres especiales.
-	if (!preg_match('/^[a-zA-Z0-9_\-]{4,20}$/', $_POST['nickname']))
-	{
-		$errores[] = 'The <strong>nickname</strong> should have minimum 4 characters and maximum 20. No speciall characters allowed.';
 	}
 
 	// El nombre = que nickname y máximo 20 caracteres.
@@ -76,12 +59,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") // estamos recibiendo datos por POST
 		$errores[] = '<strong>Password</strong> requirements not accomplished. Minimum 6 characters, 1 Capital Letter, 1 regular letter, 1 number';
 	}
 
-	// Validar e-mail
-	if (!preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,5})$/', $_POST['email']))
-	{
-		$errores[] = 'The <strong>e-mail address</strong> doesn\'t have a valid format.';
-	}
-
 	// <editor-fold defaultstate="collapsed" desc="Mostramos el DIV con los errores.">
 	// Mostramos a continuación el contenedor errores y cubrimos su contenido con el array de errores.
 	echo '<div class="errores"><ul>';
@@ -96,38 +73,32 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") // estamos recibiendo datos por POST
 		// Insertamos en la tabla.
 		// Preparamos la SQL.
 		// Utilizamos mysql_real_escape_string() para escapar aquellos caracteres susceptibles de inyección MySQL.
-		
-		$sql = sprintf("insert into users(nickname,name,surname,password,email,birthday,datecreated,ipaddress,privilege,checking) values('%s','%s','%s','%s','%s','%s','%s','%s',%b,'%s')", mysql_real_escape_string($_POST['nickname']), mysql_real_escape_string($_POST['name']), mysql_real_escape_string($_POST['surname']), encriptar($_POST['password']), mysql_real_escape_string($_POST['email']), cambiaf_mysql($_POST['birthday']), time(), $_SERVER['REMOTE_ADDR'], 1, $validacion);
+		$sql = sprintf("insert into users(name,surname,password,birthday,datecreated,ipaddress,privilege) values(%s','%s','%s','%s','%s',%b,'%s')", mysql_real_escape_string($_POST['name']), mysql_real_escape_string($_POST['surname']), encriptar($_POST['password']), cambiaf_mysql($_POST['birthday']), time(), $_SERVER['REMOTE_ADDR'], 1);
 
 		// Ejecutamos la consulta.
 		mysql_query($sql, $conexion) or die(mysql_error());
-
-		// Enviamos el correo de validación.
-		$asunto = "Validación de registro en Blog PHP 2013.";
-		$contenido = "Estimado/a {$_POST['name']} {$_POST['surname']}, hemos recibido una petición de suscripción a nuestra web.<br/><br/>Por favor <a href='http://{$_SERVER['HTTP_HOST']}/blog2013/web/validacion.html?ck=$validacion'>valide su correo aquí</a>, para tener acceso a la web.<br/><br/>Reciba un cordial saludo.<br/><br/><strong>IES San Clemente</strong><br/>Santiago de Compostela (Spain).<br/><br/>Fecha/hora: ". date("d/m/Y", time()) . " a las ".date("H:i:s", time()).".<br/>Dirección IP: ".$_SERVER['REMOTE_ADDR'];
-
-		// Enviamos el correo.
-		enviar_correo($_POST['name'] . ' ' . $_POST['surname'], $_POST['email'], $asunto, $contenido);
-
-		// Mostramos mensaje
-		echo "Hemos recibido correctamente su solicitud de registro en nuestra web.<br/><br/>Por favor compruebe su buzón de correo y realice la validación del mismo a través<br/> del enlace que le hemos enviado.<br/><br/>Muchas gracias.";
 	}
 }
 if (count($errores) != 0 || empty($_POST)) // Mostramos el formulario.
 {
+	
+	// Obtenemos los datos del usuario conectado.
+	$sql=sprintf("select * from users where nickname='%s'",$_SESSION['nickname']);
+	$recordset=mysql_query($sql,$conexion) or die(mysql_error());
+	$fila=mysql_fetch_assoc($recordset);
 	?>
 	<form class="formulario" action="" method="post" autocomplete="off">
 		<ul>
 			<li>
-				<h2>Registration Form</h2>
+				<h2>User Profile</h2>
 			</li>
 			<li>
 				<label for="nickname">Nickname:</label>
-				<input type="text" name="nickname" id="nickname" placeholder="nickname" autofocus size="10" maxlength="20" value="<?php if (!empty($_POST['nickname'])) echo $_POST['nickname']; ?>"/>
+				<input type="text" name="nickname" id="nickname" placeholder="nickname"  size="10" maxlength="20" disabled value="<?php echo $fila['nickname']; ?>"/>
 			</li>
 			<li>
 				<label for="name">Name:</label>
-				<input type="text" name="name" id="name" placeholder="Your name" size="10" maxlength="20" value="<?php if (!empty($_POST['name'])) echo $_POST['name']; ?>"/>
+				<input type="text" name="name" id="name" placeholder="Your name" size="10" maxlength="20" value="<?php if (!empty($_POST['name'])) echo $_POST['name'];  ?>"/>
 			</li>
 			<li>
 				<label for="surname">Surname:</label>
@@ -136,18 +107,19 @@ if (count($errores) != 0 || empty($_POST)) // Mostramos el formulario.
 			<li>
 				<label for="password">Password:</label>
 				<input type="password" name="password" id="password" size="10" maxlength="15" value="<?php if (!empty($_POST['password'])) echo $_POST['password']; ?>"/>
+				<input type="hidden" name="oldpassword" id="oldpassword" size="10" maxlength="15" value="<?php if (!empty($_POST['password'])) echo $_POST['password']; ?>"/>
 			</li>
 			<li>
 				<label for="email">E-mail address:</label>
-				<input type="email" name="email" id="email" placeholder="test@info.local" size="20" maxlength="50" value="<?php if (!empty($_POST['email'])) echo $_POST['email']; ?>"/>
+				<input type="email" name="email" id="email" placeholder="test@info.local" size="20" maxlength="50" disabled value="<?php if (!empty($_POST['email'])) echo $_POST['email']; ?>"/>
 			</li>
 			<li>
 				<label for="birthday">Birthday:</label>
-				<input type="date" name="birthday" id="birthday" value="<?php if (!empty($_POST['birthday'])) echo $_POST['birthday']; ?>" />
+				<input type="date" name="birthday" id="birthday" value="<?php if (!empty($_POST['birthday'])) echo $_POST['birthday']; ?>"/>
 			</li>
 			<li>
 				<input type="reset" class="controles" value="Reset" />
-				<input type="submit" class="controles" value="Sign Up" />
+				<input type="submit" class="controles" value="Update" />
 			</li>
 		</ul>
 	</form>
