@@ -71,7 +71,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") // estamos recibiendo datos por POST
 	// La contraseña debe contener de 6 a 15 caracteres (cualquier tipo de caracter), al menos 1 letra minúscula, 1 Mayúscula, al menos 1 número
 	// Check your expressions at: http://www.phpliveregex.com/
 	// Have a look at: http://www.rexegg.com/ for more info!!.
-	if (!preg_match('/(?=^[\w\W]{6,8}$)(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d).*/', $_POST['password']))
+	// \w	Matches any single "word" character, namely alphanumeric or underscore. This is equivalent to [a-zA-Z0-9_]
+	// \W means "any non-word character".
+	// Más fácil: /(?=^[\w\W]{6,15}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*/
+	if (!preg_match('/(?=^[\w\W]{6,15}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*/', $_POST['password']))
 	{
 		$errores[] = '<strong>Password</strong> requirements not accomplished. Minimum 6 characters, 1 Capital Letter, 1 regular letter, 1 number';
 	}
