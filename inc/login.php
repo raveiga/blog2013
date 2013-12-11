@@ -16,9 +16,10 @@ if (!empty($_POST['nickname']))
 			// Comprobamos que la contraseña es correcta, usando Crypt.
 			if (crypt($_POST['password'], $fila['password']) == $fila['password'])
 			{
-				// Creamos variable de sesión. Las sesiones ya fueron inicializadas en el controlador.
+				// Creamos las variables de sesión que necesitemos. Las sesiones ya fueron inicializadas en el controlador.
 				$_SESSION['nickname'] = $_POST['nickname'];
-
+				$_SESSION['personalinfo'] = $fila['name'].' '.$fila['surname'];
+				$_SESSION['datecreated'] = date("d/m/Y",$fila['datecreated']);
 				// Redireccionamos a la página index.html
 				header("location: index.html");
 				

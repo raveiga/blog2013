@@ -1,4 +1,23 @@
 <section>
+	<?php
+	if (!empty($_SESSION['nickname']))
+	{
+		$nombrefinal = md5("semillakillerblog" . $_SESSION['nickname']) . ".jpg";
+		if (file_exists(RUTA_FOTOS.$nombrefinal))
+		{
+			echo "<h2>Your profile picture</h2>";
+			echo '<ul class="small-image-list">';
+			echo '<li><img src="../fotos/'.$nombrefinal.'" alt="'.$_SESSION['nickname'].'?'.time().'" class="left" />';
+			echo '<h4>'.$_SESSION['personalinfo'].'</h4>';
+			echo '<p>IP address: '.$_SERVER['REMOTE_ADDR'];
+			echo '<br/>Registration date: '.$_SESSION['datecreated'].'</p>';
+			echo '</li></ul>';
+		}
+			
+	}
+	else
+	{
+	?>
 	<h2>People Online</h2>
 	<ul class="small-image-list">
 		<li>
@@ -12,4 +31,7 @@
 			<p>Vitae magna eget odio amet mollis justo facilisis amet quis. Sed sagittis consequat.</p>
 		</li>
 	</ul>
+	<?php
+	}
+	?>
 </section>
