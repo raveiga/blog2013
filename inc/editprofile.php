@@ -90,7 +90,8 @@ if (!empty($_SESSION['nickname']))
 			// Ejecutamos la consulta.
 			mysql_query($sql, $conexion) or die(mysql_error());
 			
-			echo "Your personal information has been update successfully !";
+			echo "Your personal information has been update successfully !<br/><br/>";
+			echo "If you updated your name and surname logout and Sign in again to see the results.";
 		}
 	}
 	if (count($errores) != 0 || empty($_POST)) // Mostramos el formulario.

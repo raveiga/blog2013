@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `messages` (
   `title` varchar(150) COLLATE utf8_spanish_ci NOT NULL,
   `content` text COLLATE utf8_spanish_ci NOT NULL,
   `tags` varchar(250) COLLATE utf8_spanish_ci NOT NULL,
-  `date` datetime NOT NULL,
+  `date` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `nickname` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci AUTO_INCREMENT=1 ;

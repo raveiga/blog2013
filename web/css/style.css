@@ -25,7 +25,7 @@
 	}
 
 	h1,h2 {
-		text-transform: lowercase;
+		//text-transform: lowercase;
 	}
 
 	h2 {
@@ -722,3 +722,9 @@
 			}
 	
 	}
+     
+     .posts{
+          list-style-type: square;
+          padding-left: 60px; 
+          
+     }

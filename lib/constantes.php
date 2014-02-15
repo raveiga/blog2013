@@ -18,9 +18,11 @@ define('BD_PASSWORD', 'abc123.');
 define('MAIL_SERVIDOR',$_SERVER['HTTP_HOST']);
 define('MAIL_PUERTO',25); // Para Gmail es el 465 o el 587.
 
-define('MAIL_NOMBRE_REMITENTE','Rafa Veiga');
+define('MAIL_NOMBRE_REMITENTE','Webmaster veiga.local');
 define('MAIL_REMITENTE','info@veiga.local');
 define('MAIL_PASSWORD','abc123..');
+
+define('MAIL_CONTACTO','info@veiga.local');
 
 // Creamos la conexión de la base de datos.
 $conexion=mysql_connect(BD_SERVIDOR,BD_USUARIO,BD_PASSWORD) or die(mysql_error());

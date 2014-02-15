@@ -85,6 +85,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") // estamos recibiendo datos por POST
 		$errores[] = 'The <strong>e-mail address</strong> doesn\'t have a valid format.';
 	}
 
+	// Comprobamos el texto captcha.
+	if (empty($_SESSION['captcha']) || $_SESSION['captcha']!=$_POST['captcha'])
+	{
+		$errores[] = 'The <strong>captcha text</strong> is invalid or empty.';
+	}
 	// <editor-fold defaultstate="collapsed" desc="Mostramos el DIV con los errores.">
 	// Mostramos a continuación el contenedor errores y cubrimos su contenido con el array de errores.
 	echo '<div class="errores"><ul>';
@@ -148,6 +153,12 @@ if (count($errores) != 0 || empty($_POST)) // Mostramos el formulario.
 				<label for="birthday">Birthday:</label>
 				<input type="date" name="birthday" id="birthday" value="<?php if (!empty($_POST['birthday'])) echo $_POST['birthday']; ?>" />
 			</li>
+			<li>
+				<label for="captcha">Write the Captcha:</label>
+				<input type="text" name="captcha" id="captcha" value="" size="5" maxlength="5"/>
+				<img src="captcha.php"/>
+			</li>
+					
 			<li>
 				<input type="reset" class="controles" value="Reset" />
 				<input type="submit" class="controles" value="Sign Up" />

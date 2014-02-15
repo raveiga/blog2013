@@ -1,17 +1,11 @@
 <section>
-	<h2>Links</h2>
-	<ul class="link-list">
-		<li><a href="#">Quis accumsan lorem</a></li>
-		<li><a href="#">Sed neque nisi consequat</a></li>
-		<li><a href="#">Eget et amet consequat</a></li>
-		<li><a href="#">Dapibus sed mattis blandit</a></li>
-	</ul>
+     <h2>Links</h2>
+     <ul class="link-list">
+          <li><a href="http://www.php.net/" target="_blank">PHP Net</a></li>
+          <li><a href="http://icons.marekventur.de/" target="_blank">Raphaël Icon-Set</a></li>
+          <li><a href="http://www.flaticon.com/" target="_blank">Flat icons.com</a></li>
+          <li><a href="http://www.phpliveregex.com/" target="_blank">PHP Regular Expressions</a></li>
+          <li><a href="https://github.com/Synchro/PHPMailer" target="_blank">PHPMailer</a></li>
+     </ul>
 </section>
 
-<section>
-	<h2>About this blog</h2>
-	<p>Duis neque sed nisi, dapibus sed mattis rutrum accumsan sed. 
-		Suspendisse eu varius amet nibh. Suspendisse vitae magna eget odio amet 
-		mollis justo facilisis quis. Sed sagittis mauris amet tellus gravida
-		lorem ipsum dolor consequat blandit tempus ipsum dolor lorem sit amet.</p>
-</section>

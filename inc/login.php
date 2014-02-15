@@ -17,7 +17,7 @@ if (!empty($_POST['nickname']))
 			if (crypt($_POST['password'], $fila['password']) == $fila['password'])
 			{
 				// Creamos las variables de sesión que necesitemos. Las sesiones ya fueron inicializadas en el controlador.
-				$_SESSION['nickname'] = $_POST['nickname'];
+				$_SESSION['nickname'] = strtolower($_POST['nickname']);
 				$_SESSION['personalinfo'] = $fila['name'].' '.$fila['surname'];
 				$_SESSION['datecreated'] = date("d/m/Y",$fila['datecreated']);
 				// Redireccionamos a la página index.html

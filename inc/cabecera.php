@@ -2,7 +2,7 @@
 	<div class="5grid">
 		<div class="12u-first">
 			<header id="header">
-				<h1><a href="#">PHP Blog</a></h1>
+				<h1><a href="#">PHP Blog</a> <img src='img/logo-64.png'/></h1>
 				<nav>
 					<?php
 					$activarClase = ' class="current-page-item"';
@@ -12,7 +12,7 @@
 					$paginaActiva = 'index';
 
 					// Lista de las páginas validas separadas por coma.
-					$cadenaPaginas = 'index,registro,login,editprofile,uploadpicture,logout';
+					$cadenaPaginas = 'index,registro,login,editprofile,uploadpicture,logout,publish,contact';
 
 					// Comprueba que la variable exista.
 					if (isset($_GET['cargar']) && $_GET['cargar'] != '')
@@ -31,12 +31,10 @@
 					if (!empty($_SESSION['nickname']))
 					{
 						?>
-						<a href = "editprofile.html"<?php
-						if ($existePagina && $paginaActiva == 'editprofile')
-							echo $activarClase;
-						?>>Edit Profile</a>
+                              <a href="publish.html"<?php if ($existePagina && $paginaActiva == 'publish') echo $activarClase;?>>Publish</a>
+						<a href="editprofile.html"<?php if ($existePagina && $paginaActiva == 'editprofile') echo $activarClase;?>>Edit Profile</a>
 						<a href="uploadpicture.html"<?php if ($existePagina && $paginaActiva == 'uploadpicture') echo $activarClase; ?>>Upload Picture</a>
-												<a href="logout.html"<?php if ($existePagina && $paginaActiva == 'logout') echo $activarClase; ?>>Logout (<?php echo $_SESSION['nickname'];?>)</a>
+						<a href="logout.html"<?php if ($existePagina && $paginaActiva == 'logout') echo $activarClase; ?>>Logout (<?php echo $_SESSION['nickname'];?>)</a>
 						
 					<?php
 					}
@@ -44,7 +42,8 @@
 					{
 						?>
 						<a href="registro.html"<?php if ($existePagina && $paginaActiva == 'registro') echo $activarClase; ?>>Sign Up</a>
-						<a href="login.html"<?php if ($existePagina && $paginaActiva == 'registro') echo $activarClase; ?>>Sign In</a>
+						<a href="login.html"<?php if ($existePagina && $paginaActiva == 'login') echo $activarClase; ?>>Sign In</a>
+                              <a href="contact.html"<?php if ($existePagina && $paginaActiva == 'contact') echo $activarClase; ?>>Contact</a>
 						<?php
 					}
 					?>

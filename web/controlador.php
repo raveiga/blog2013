@@ -1,8 +1,8 @@
 <?php 
 	// Inicializamos las sesiones.
-	@session_start();	
-	require '../lib/constantes.php';
-	require '../lib/funciones.php';
+	@session_start();
+	require dirname(__DIR__).'/lib/constantes.php';
+	require dirname(__DIR__).'/lib/funciones.php';
 ?>
 <!DOCTYPE html>
 <html lang="en">
